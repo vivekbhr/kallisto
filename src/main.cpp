@@ -532,6 +532,7 @@ void ListSingleCellTechnologies() {
   << "10xv3            10x version 3 chemistry" << endl
   << "CELSeq           CEL-Seq" << endl
   << "CELSeq2          CEL-Seq version 2" << endl
+  << "CELSeq2          CEL-seq version 3" << endl
   << "DropSeq          DropSeq" << endl
   << "inDrops          inDrops" << endl
   << "SCRBSeq          SCRB-Seq" << endl
@@ -856,7 +857,7 @@ bool CheckOptionsBus(ProgramOptions& opt) {
       busopt.seq = BUSOptionSubstr(1,0,0);
       busopt.umi = BUSOptionSubstr(0,0,6);
       busopt.bc.push_back(BUSOptionSubstr(0,6,12));
-    } else if (opt.technology == "CELSEQ2new") {
+    } else if (opt.technology == "CELSEQ3") {
       busopt.nfiles = 2;
       busopt.seq = BUSOptionSubstr(1,0,0);
       busopt.umi = BUSOptionSubstr(0,0,6);
