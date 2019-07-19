@@ -532,7 +532,7 @@ void ListSingleCellTechnologies() {
   << "10xv3            10x version 3 chemistry" << endl
   << "CELSeq           CEL-Seq" << endl
   << "CELSeq2          CEL-Seq version 2" << endl
-  << "CELSeq2          CEL-seq version 3" << endl
+  << "CELSeq3          CEL-seq version 3" << endl
   << "DropSeq          DropSeq" << endl
   << "inDrops          inDrops" << endl
   << "SCRBSeq          SCRB-Seq" << endl
