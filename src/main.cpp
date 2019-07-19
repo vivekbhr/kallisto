@@ -856,6 +856,11 @@ bool CheckOptionsBus(ProgramOptions& opt) {
       busopt.seq = BUSOptionSubstr(1,0,0);
       busopt.umi = BUSOptionSubstr(0,0,6);
       busopt.bc.push_back(BUSOptionSubstr(0,6,12));
+    } else if (opt.technology == "CELSEQ2new") {
+      busopt.nfiles = 2;
+      busopt.seq = BUSOptionSubstr(1,0,0);
+      busopt.umi = BUSOptionSubstr(0,0,6);
+      busopt.bc.push_back(BUSOptionSubstr(0,6,14));
     } else if (opt.technology == "SCRBSEQ") {
       busopt.nfiles = 2;
       busopt.seq = BUSOptionSubstr(1,0,0);
