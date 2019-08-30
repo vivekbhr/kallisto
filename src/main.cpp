@@ -277,7 +277,7 @@ void ParseOptionsEM(int argc, char **argv, ProgramOptions& opt) {
     opt.strand_specific = true;
     opt.strand = ProgramOptions::StrandType::FR;
   }
-  
+
   if (strand_RF_flag) {
     opt.strand_specific = true;
     opt.strand = ProgramOptions::StrandType::RF;
@@ -293,7 +293,7 @@ void ParseOptionsEM(int argc, char **argv, ProgramOptions& opt) {
 
   if (gbam_flag) {
     opt.pseudobam = true;
-    opt.genomebam = true;    
+    opt.genomebam = true;
   }
 
   if (fusion_flag) {
@@ -449,7 +449,7 @@ void ParseOptionsPseudo(int argc, char **argv, ProgramOptions& opt) {
     default: break;
     }
   }
-  
+
   if (umi_flag) {
     opt.umi = true;
     opt.single_end = true; // UMI implies single-end reads
@@ -459,7 +459,7 @@ void ParseOptionsPseudo(int argc, char **argv, ProgramOptions& opt) {
   for (int i = optind; i < argc; i++) {
     opt.files.push_back(argv[i]);
   }
- 
+
   if (verbose_flag) {
     opt.verbose = true;
   }
@@ -468,7 +468,7 @@ void ParseOptionsPseudo(int argc, char **argv, ProgramOptions& opt) {
     opt.single_end = true;
     opt.single_overhang = true;
   }
-  
+
   if (quant_flag) {
     opt.pseudo_quant = true;
   }
@@ -502,7 +502,7 @@ void ParseOptionsMerge(int argc, char **argv, ProgramOptions& opt) {
 
     switch (c) {
     case 0:
-      break;    
+      break;
     case 'i': {
       opt.index = optarg;
       break;
@@ -514,17 +514,17 @@ void ParseOptionsMerge(int argc, char **argv, ProgramOptions& opt) {
     default: break;
     }
   }
-  
+
   // all other arguments are fast[a/q] files to be read
   for (int i = optind; i < argc; i++) {
     opt.files.push_back(argv[i]);
   }
- 
+
 }
 
 void ListSingleCellTechnologies() {
   //todo, figure this out
-  cout << "List of supported single-cell technologies" << endl << endl 
+  cout << "List of supported single-cell technologies" << endl << endl
   << "short name       description" << endl
   << "----------       -----------" << endl
   << "10xv1            10x version 1 chemistry" << endl
@@ -532,7 +532,7 @@ void ListSingleCellTechnologies() {
   << "10xv3            10x version 3 chemistry" << endl
   << "CELSeq           CEL-Seq" << endl
   << "CELSeq2          CEL-Seq version 2" << endl
-  << "CELSeq3          CEL-seq version 3" << endl
+  << "VASASeq          VASA-seq" << endl
   << "DropSeq          DropSeq" << endl
   << "inDrops          inDrops" << endl
   << "SCRBSeq          SCRB-Seq" << endl
@@ -563,7 +563,7 @@ void ParseOptionsBus(int argc, char **argv, ProgramOptions& opt) {
 
     switch (c) {
     case 0:
-      break;    
+      break;
     case 'i': {
       opt.index = optarg;
       break;
@@ -593,12 +593,12 @@ void ParseOptionsBus(int argc, char **argv, ProgramOptions& opt) {
     ListSingleCellTechnologies();
     exit(1);
   }
-  
+
   // all other arguments are fast[a/q] files to be read
   for (int i = optind; i < argc; i++) {
     opt.files.push_back(argv[i]);
   }
- 
+
 }
 
 bool ParseTechnology(const std::string &techstr, std::vector<BUSOptionSubstr> &values, std::vector<int> &files, std::vector<std::string> &errorList, std::vector<BUSOptionSubstr> &bcValues) {
@@ -685,7 +685,7 @@ bool ParseTechnology(const std::string &techstr, std::vector<BUSOptionSubstr> &v
       val = stoi(stringVal);
       numbers.push_back(val);
       values.push_back(BUSOptionSubstr(numbers[0], numbers[1], numbers[2]));
-      numbers.clear();  
+      numbers.clear();
     } catch(const std:: invalid_argument& ia) {
       errorList.push_back("Error: Invalid argument");
       return true;
@@ -787,7 +787,7 @@ bool CheckOptionsBus(ProgramOptions& opt) {
       if (!S_ISDIR(stFileInfo.st_mode)) {
         cerr << "Error: file " << opt.output << " exists and is not a directory" << endl;
         ret = false;
-      } 
+      }
     } else {
       // create directory
       if (my_mkdir(opt.output.c_str(), 0777) == -1) {
@@ -805,7 +805,7 @@ bool CheckOptionsBus(ProgramOptions& opt) {
     if (n != 0 && n < opt.threads) {
       cerr << "Warning: you asked for " << opt.threads
            << ", but only " << n << " cores on the machine" << endl;
-    }    
+    }
   }
 
   if (opt.technology.empty()) {
@@ -813,7 +813,7 @@ bool CheckOptionsBus(ProgramOptions& opt) {
     ret = false;
   } else {
     auto& busopt = opt.busOptions;
-    
+
     if (opt.technology == "10XV2") {
       busopt.nfiles = 2;
       busopt.seq = BUSOptionSubstr(1,0,0); // second file, entire string
@@ -846,7 +846,7 @@ bool CheckOptionsBus(ProgramOptions& opt) {
       busopt.seq = BUSOptionSubstr(1,0,0);
       busopt.umi = BUSOptionSubstr(0,42,48);
       busopt.bc.push_back(BUSOptionSubstr(0,0,11));
-      busopt.bc.push_back(BUSOptionSubstr(0,30,38));    
+      busopt.bc.push_back(BUSOptionSubstr(0,30,38));
     } else if (opt.technology == "CELSEQ") {
       busopt.nfiles = 2;
       busopt.seq = BUSOptionSubstr(1,0,0);
@@ -857,7 +857,7 @@ bool CheckOptionsBus(ProgramOptions& opt) {
       busopt.seq = BUSOptionSubstr(1,0,0);
       busopt.umi = BUSOptionSubstr(0,0,6);
       busopt.bc.push_back(BUSOptionSubstr(0,6,12));
-    } else if (opt.technology == "CELSEQ3") {
+  } else if (opt.technology == "VASASEQ") {
       busopt.nfiles = 2;
       busopt.seq = BUSOptionSubstr(1,0,0);
       busopt.umi = BUSOptionSubstr(0,0,6);
@@ -874,7 +874,7 @@ bool CheckOptionsBus(ProgramOptions& opt) {
       vector<std::string> errorList;
       bool invalid = ParseTechnology(opt.technology, values, files, errorList, bcValues);
       if(!invalid) {
-        busopt.nfiles = files.size(); 
+        busopt.nfiles = files.size();
         for(int i = 0; i < bcValues.size(); i++) {
           busopt.bc.push_back(bcValues[i]);
         }
@@ -985,7 +985,7 @@ bool CheckOptionsEM(ProgramOptions& opt, bool emonly = false) {
             << "       (use --single for processing single-end reads)" << endl;
         ret = false;
       }
-    }    
+    }
   }
 
   if ((opt.fld != 0.0 && opt.sd == 0.0) || (opt.sd != 0.0 && opt.fld == 0.0)) {
@@ -1029,7 +1029,7 @@ bool CheckOptionsEM(ProgramOptions& opt, bool emonly = false) {
     cerr << "Error: invalid value for minimum range " << opt.min_range << endl;
     ret = false;
   }
-  
+
   if (opt.genomebam) {
     if (!opt.gtfFile.empty()) {
       struct stat stFileInfo;
@@ -1051,7 +1051,7 @@ bool CheckOptionsEM(ProgramOptions& opt, bool emonly = false) {
         ret = false;
       }
     }
-    
+
   }
 
 
@@ -1140,13 +1140,13 @@ bool CheckOptionsMerge(ProgramOptions& opt) {
     }
   }
 
-    
+
   if (opt.files.size() == 0) {
     cerr << ERROR_STR << " Missing input directory to merge" << endl;
     ret = false;
   } else {
-    struct stat stFileInfo;      
-    for (auto& fn : opt.files) {        
+    struct stat stFileInfo;
+    for (auto& fn : opt.files) {
       auto intStat = stat(fn.c_str(), &stFileInfo);
       if (intStat != 0) {
         cerr << ERROR_STR << " input directory not found " << fn << endl;
@@ -1157,7 +1157,7 @@ bool CheckOptionsMerge(ProgramOptions& opt) {
           ret = false;
         }
 
-        
+
         if (!checkFileExists(fn + "/matrix.ec")) {
           cerr << "Error: file " << fn << "/matrix.ec was not found, check that it was run in batch mode" << endl;
           ret = false;
@@ -1202,7 +1202,7 @@ bool CheckOptionsMerge(ProgramOptions& opt) {
     }
   }
 
-  
+
   return ret;
 }
 
@@ -1235,15 +1235,15 @@ bool CheckOptionsPseudo(ProgramOptions& opt) {
   if (!opt.batch_mode) {
     if (opt.umi) {
       cerr << ERROR_STR << " UMI must be run in batch mode, use --batch option" << endl;
-      ret = false;      
+      ret = false;
     }
-    
+
     if (opt.files.size() == 0) {
       cerr << ERROR_STR << " Missing read files" << endl;
       ret = false;
     } else {
-      struct stat stFileInfo;      
-      for (auto& fn : opt.files) {        
+      struct stat stFileInfo;
+      for (auto& fn : opt.files) {
         auto intStat = stat(fn.c_str(), &stFileInfo);
         if (intStat != 0) {
           cerr << ERROR_STR << " file not found " << fn << endl;
@@ -1324,7 +1324,7 @@ bool CheckOptionsPseudo(ProgramOptions& opt) {
       ret = false;
     }
   }
-  
+
   if (opt.umi) {
     opt.single_end = true;
     if (opt.fld != 0.0 || opt.sd != 0.0) {
@@ -1427,7 +1427,7 @@ bool CheckOptionsInspect(ProgramOptions& opt) {
 
   if (!opt.bedFile.empty() || !opt.gtfFile.empty()) {
     opt.pseudobam = true;
-    opt.genomebam = true;    
+    opt.genomebam = true;
   }
 
   if (opt.genomebam) {
@@ -1524,7 +1524,7 @@ void usage() {
        << "    pseudo        Runs the pseudoalignment step " << endl
        << "    merge         Merges several batch runs " << endl
        << "    h5dump        Converts HDF5-formatted results to plaintext" << endl
-       << "    inspect       Inspects and gives information about an index" << endl 
+       << "    inspect       Inspects and gives information about an index" << endl
        << "    version       Prints version information" << endl
        << "    cite          Prints citation information" << endl << endl
        << "Running kallisto <CMD> without arguments prints usage information for <CMD>"<< endl << endl;
@@ -1537,7 +1537,7 @@ void usageBus() {
        << "Required arguments:" << endl
        << "-i, --index=STRING            Filename for the kallisto index to be used for" << endl
        << "                              pseudoalignment" << endl
-       << "-o, --output-dir=STRING       Directory to write output to" << endl 
+       << "-o, --output-dir=STRING       Directory to write output to" << endl
        << "-x, --technology=STRING       Single-cell technology used " << endl << endl
        << "Optional arguments:" << endl
        << "-l, --list                    List all single-cell technologies supported" << endl
@@ -1572,7 +1572,7 @@ void usageInspect() {
        << "-G, --gfa=STRING        Filename for GFA output of T-DBG" << endl
        << "-g, --gtf=STRING        Filename for GTF file" << endl
        << "-b, --bed=STRING        Filename for BED output (default: index + \".bed\")" << endl << endl;
- 
+
 }
 
 void usageEM(bool valid_input = true) {
@@ -1737,7 +1737,7 @@ int main(int argc, char *argv[]) {
       }
     } else if (cmd == "bus") {
       if (argc ==2) {
-        usageBus();        
+        usageBus();
         return 0;
       }
       ParseOptionsBus(argc-1, argv+1,opt);
@@ -1752,7 +1752,7 @@ int main(int argc, char *argv[]) {
         KmerIndex index(opt);
         index.load(opt);
         Transcriptome model; // empty
-        MinCollector collection(index, opt); 
+        MinCollector collection(index, opt);
         MasterProcessor MP(index, opt, collection, model);
         num_processed = ProcessBUSReads(MP, opt);
 
@@ -1784,9 +1784,9 @@ int main(int argc, char *argv[]) {
         } else {
           umilen = opt.busOptions.getUMILength();
         }
-        
-        
-        if (write) {          
+
+
+        if (write) {
           std::FILE* fp = std::fopen((opt.output + "/output.bus").c_str(), "r+b");
           if (fp != nullptr) {
             std::fseek(fp,8,SEEK_SET); // skip magic string and version
@@ -1812,12 +1812,12 @@ int main(int argc, char *argv[]) {
         // gather stats
         num_unique = 0;
         for (int i = 0; i < index.num_trans; i++) {
-          num_unique += collection.counts[i];          
+          num_unique += collection.counts[i];
         }
         for (int i = 0; i < collection.counts.size(); i++) {
           num_pseudoaligned += collection.counts[i];
         }
-        
+
         // write json file
         std::string call = argv_to_string(argc, argv);
         plaintext_aux(
@@ -1840,12 +1840,12 @@ int main(int argc, char *argv[]) {
       ParseOptionsMerge(argc -1, argv + 1, opt);
       if (!CheckOptionsMerge(opt)) {
         usageMerge();
-        exit(1);        
+        exit(1);
       } else {
         int num_trans, index_version;
         int64_t num_processed, num_pseudoaligned, num_unique;
-  
-        bool b = MergeBatchDirectories(opt, num_trans, num_processed, num_pseudoaligned, num_unique, index_version);        
+
+        bool b = MergeBatchDirectories(opt, num_trans, num_processed, num_pseudoaligned, num_unique, index_version);
         if (!b) {
           exit(1);
         }
@@ -1886,24 +1886,24 @@ int main(int argc, char *argv[]) {
 
         bool guessChromosomes = false;
         Transcriptome model;
-        if (opt.genomebam) {          
+        if (opt.genomebam) {
           if (!opt.chromFile.empty()) {
             model.loadChromosomes(opt.chromFile);
           } else {
             guessChromosomes = true;
-          }          
+          }
           model.parseGTF(opt.gtfFile, index, opt, guessChromosomes);
           //model.loadTranscriptome(index, in, opt);
         }
 
 
-        
+
         int64_t num_processed = 0;
         int64_t num_pseudoaligned = 0;
         int64_t num_unique = 0;
 
-      
-        MinCollector collection(index, opt);        
+
+        MinCollector collection(index, opt);
         MasterProcessor MP(index, opt, collection, model);
         num_processed = ProcessReads(MP, opt);
 
@@ -1953,7 +1953,7 @@ int main(int argc, char *argv[]) {
         }
 
         for (int i = 0; i < index.num_trans; i++) {
-          num_unique += collection.counts[i];          
+          num_unique += collection.counts[i];
         }
         for (int i = 0; i < collection.counts.size(); i++) {
           num_pseudoaligned += collection.counts[i];
@@ -2016,10 +2016,10 @@ int main(int argc, char *argv[]) {
         }
 
         if (opt.pseudobam) {
-        
+
           MP.processAln(em, true);
         }
-        
+
 
         cerr << endl;
       }
@@ -2153,14 +2153,14 @@ int main(int argc, char *argv[]) {
         int64_t num_unique = 0;
 
         Transcriptome model; // empty model
-        if (!opt.gtfFile.empty()) {          
+        if (!opt.gtfFile.empty()) {
           model.parseGTF(opt.gtfFile, index, opt, true);
         }
         MasterProcessor MP(index, opt, collection, model);
         if (!opt.batch_mode) {
           num_processed = ProcessReads(MP, opt);
           collection.write((opt.output + "/pseudoalignments"));
-        } else {          
+        } else {
           num_processed = ProcessBatchReads(MP,opt);
         }
 
@@ -2176,7 +2176,7 @@ int main(int argc, char *argv[]) {
             num_pseudoaligned += p.second;
           }
         }
-        
+
 
         plaintext_aux(
             opt.output + "/run_info.json",
@@ -2190,19 +2190,19 @@ int main(int argc, char *argv[]) {
             start_time,
             call);
 
-        
-        
+
+
         std::vector<std::vector<std::pair<int32_t, double>>> Abundance_mat;
         std::vector<std::pair<double, double>> FLD_mat;
-          
+
         if (opt.pseudo_quant) {
           int n_batch_files = opt.batch_files.size();
           Abundance_mat.resize(n_batch_files, {});
           FLD_mat.resize(n_batch_files, {});
 
           std::cerr << "[quant] Running EM algorithm for each cell .."; std::cerr.flush();
-          
-          auto EM_lambda = [&](int id) {          
+
+          auto EM_lambda = [&](int id) {
             MinCollector collection(index, opt);
             collection.flens = MP.batchFlens[id];
             collection.counts.assign(index.ecmap.size(), 0);
@@ -2258,7 +2258,7 @@ int main(int argc, char *argv[]) {
               workers.emplace_back(std::thread(EM_lambda, id));
               //workers.emplace_back(std::thread(ReadProcessor(index, opt, tc, *this, id,i)));
             }
-            
+
             for (int i = 0; i < nt; i++) {
               workers[i].join();
             }
@@ -2290,7 +2290,7 @@ int main(int argc, char *argv[]) {
           // write out gene info
           std::vector<std::vector<std::pair<int32_t, double>>> geneCounts;
           geneCounts.assign(MP.batchCounts.size(), {});
-          
+
           std::unordered_set<int> gene_ids;
           gene_ids.reserve(100);
           int n_batch_files = opt.batch_files.size();
@@ -2298,12 +2298,12 @@ int main(int argc, char *argv[]) {
 
           for (int id = 0; id < n_batch_files; id++) {
             auto& sgc = geneCounts[id];
-            gc.assign(model.genes.size(), 0.0);  
+            gc.assign(model.genes.size(), 0.0);
             const auto& bc = MP.batchCounts[id];
             for (auto &p : bc) {
               int ec = p.first;
               if (ec < 0) {
-                continue; 
+                continue;
               }
               if (ec < index.num_trans) {
                 int g_id = model.transcripts[ec].gene_id;
@@ -2329,27 +2329,27 @@ int main(int argc, char *argv[]) {
 
             for (int j = 0; j < gc.size(); j++) {
               if (gc[j] > 0.0) {
-                sgc.push_back({j, gc[j]});                
+                sgc.push_back({j, gc[j]});
               }
             }
           }
 
 
-         
+
 
           writeGeneList(genelistname, model);
           writeSparseBatchMatrix(genecountname, geneCounts, model.genes.size());
         }
 
 
-        if (opt.pseudobam) {       
+        if (opt.pseudobam) {
           std::vector<double> fl_means(index.target_lens_.size(),0.0);
           EMAlgorithm em(collection.counts, index, collection, fl_means, opt);
           MP.processAln(em, false);
         }
       }
 
-      
+
     } else if (cmd == "h5dump") {
 
       if (argc == 2) {
