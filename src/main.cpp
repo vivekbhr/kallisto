@@ -533,6 +533,7 @@ void ListSingleCellTechnologies() {
   << "CELSeq           CEL-Seq" << endl
   << "CELSeq2          CEL-Seq version 2" << endl
   << "VASASeq          VASA-seq" << endl
+  << "scChIC           scChIC-seq (3x UMI + 8x Cell Barcode)" << endl
   << "DropSeq          DropSeq" << endl
   << "inDrops          inDrops" << endl
   << "SCRBSeq          SCRB-Seq" << endl
@@ -857,11 +858,16 @@ bool CheckOptionsBus(ProgramOptions& opt) {
       busopt.seq = BUSOptionSubstr(1,0,0);
       busopt.umi = BUSOptionSubstr(0,0,6);
       busopt.bc.push_back(BUSOptionSubstr(0,6,12));
-  } else if (opt.technology == "VASASEQ") {
+    } else if (opt.technology == "VASASEQ") {
       busopt.nfiles = 2;
       busopt.seq = BUSOptionSubstr(1,0,0);
       busopt.umi = BUSOptionSubstr(0,0,6);
       busopt.bc.push_back(BUSOptionSubstr(0,6,14));
+    } else if (opt.technology == "SCCHIC") {
+      busopt.nfiles = 2;
+      busopt.seq = BUSOptionSubstr(1,0,0);
+      busopt.umi = BUSOptionSubstr(0,0,3);
+      busopt.bc.push_back(BUSOptionSubstr(0,3,11));
     } else if (opt.technology == "SCRBSEQ") {
       busopt.nfiles = 2;
       busopt.seq = BUSOptionSubstr(1,0,0);
